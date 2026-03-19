@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org">
+<head>
+    <title>User Profile</title>
+</head>
+<body>
+<h2>User Profile Page</h2>
+
+<div sec:authorize="isAuthenticated()">
+    Добро пожаловать, <span sec:authentication="name">Имя</span>!
+</div>
+<div sec:authorize="isAnonymous()">
+    Пожалуйста, войдите в систему.
+</div>
+<div th:if="${#authentication.principal != null}">
+    <p><strong>ID:</strong> <span th:text="${#authentication.principal.id}"></span></p>
+    <p><strong>Username:</strong> <span th:text="${#authentication.principal.username}"></span></p>
+    <p><strong>Your Roles:</strong>
+        <span th:each="auth : ${#authentication.principal.authorities}"
+              th:text="${auth.authority} + ' '"></span>
+    </p>
+</div>
+
+<hr>
+<div sec:authorize="hasRole('ADMIN')">
+    <p style="color: blue;">You have Admin rights. <a href="/admin/">Go to Admin Panel</a></p>
+</div>
+
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Logout</button>
+</form>
+</body>
+</html>
