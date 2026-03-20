@@ -1,16 +1,13 @@
 package web.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import web.model.User;
-import java.util.List;
 
-public interface UserRepository {
-    void save(User user);
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    List<User> findAll();
+    User findByUsername(String username);
 
-    User findById(Long id);
-
-    void update(User user);
-
-    void deleteById(Long id);
+    User save(User user);
 }
